@@ -3,6 +3,7 @@ import React from 'react';
 import {Button} from 'react-native-paper';
 import {ScreenNavigationStackProp} from '../types/types';
 
+// New Note button for navigation bar
 export const NewNoteButton: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationStackProp>();
 

@@ -8,6 +8,7 @@ export const EditNoteScreen: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationStackProp>();
   const noteId = route.params.noteId;
 
+  // Update navigation header based on user interaction
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: noteId ? 'Edit Note' : 'New Note',

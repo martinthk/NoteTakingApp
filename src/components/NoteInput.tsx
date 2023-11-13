@@ -52,14 +52,13 @@ export const NoteInput: React.FC<Props> = ({noteId}) => {
 
   return (
     <View style={{marginHorizontal: 8, marginTop: 12}}>
-      {/* Client drop down menu */}
-
       {noteId ? (
         <Text variant="labelSmall" style={{paddingBottom: 4}}>
           Original Client: {orgClient}
         </Text>
       ) : null}
 
+      {/* Client drop down menu */}
       <SelectList
         setSelected={val => setClient(val)}
         data={clients}
@@ -71,13 +70,14 @@ export const NoteInput: React.FC<Props> = ({noteId}) => {
       />
       <Gap />
 
-      {/* Category drop down menu*/}
       {noteId ? (
         <Text variant="labelSmall" style={{paddingBottom: 4}}>
           Original Category: {orgCategory}
         </Text>
       ) : null}
 
+
+      {/* Category drop down menu*/}
       <SelectList
         setSelected={val => setCategory(val)}
         data={categories}

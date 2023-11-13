@@ -13,6 +13,7 @@ export type Notes = {
 
 const STORE_KEY = 'NOTES_STORE_KEY';
 
+// Get all notes for home page
 export const getAllNotes = async () => {
   const storeItem = await AsyncStorage.getItem(STORE_KEY);
   if (storeItem) {
@@ -21,6 +22,7 @@ export const getAllNotes = async () => {
   return {notes: []};
 };
 
+// Get individual notes by noteId
 export const getNote = async (id: string) => {
   const storeItem = await getAllNotes();
   if (storeItem) {
@@ -30,6 +32,7 @@ export const getNote = async (id: string) => {
   return null;
 };
 
+// Save note to local memory
 export const saveNote = async (
   noteId: string | undefined,
   client: string,
@@ -48,7 +51,6 @@ export const saveNote = async (
       category: category,
       noteText: text,
     });
-    console.log(storeItem.notes);
   } else {
     // Add new note to the array
     storeItem.notes.push({
@@ -62,6 +64,7 @@ export const saveNote = async (
   await AsyncStorage.setItem(STORE_KEY, JSON.stringify(storeItem)); // Convert JSON object to string as async storage expects type string
 };
 
+// Delete selected note
 export const deleteNote = async (noteId: string) => {
   const storeItem = await getAllNotes();
   const noteIndex = storeItem.notes.findIndex(note => note.id === noteId);

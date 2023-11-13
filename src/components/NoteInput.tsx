@@ -27,8 +27,14 @@ export const NoteInput: React.FC<Props> = ({noteId}) => {
   const theme = useTheme();
   const navigation = useNavigation<ScreenNavigationStackProp>();
 
-  const saveNoteHandler = () => {
-    saveNote(noteId, client, category, noteText);
+  const saveNoteHandler = async () => {
+    await saveNote(noteId, client, category, noteText);
+    navigation.navigate('Home');
+  };
+
+  const deleteNoteHandler = async () => {
+    await deleteNote(noteId!);
+    navigation.navigate('Home');
   };
 
   // Fetch client and category data from the JSON file
@@ -76,7 +82,6 @@ export const NoteInput: React.FC<Props> = ({noteId}) => {
         </Text>
       ) : null}
 
-
       {/* Category drop down menu*/}
       <SelectList
         setSelected={val => setCategory(val)}
@@ -100,12 +105,7 @@ export const NoteInput: React.FC<Props> = ({noteId}) => {
 
       <Gap />
       {/* Save button */}
-      <Button
-        mode="contained"
-        onPress={() => {
-          saveNoteHandler();
-          navigation.navigate('Home');
-        }}>
+      <Button mode="contained" onPress={() => saveNoteHandler()}>
         Save Note
       </Button>
 
@@ -115,10 +115,7 @@ export const NoteInput: React.FC<Props> = ({noteId}) => {
         <Button
           buttonColor={theme.colors.error}
           textColor="white"
-          onPress={() => {
-            deleteNote(noteId);
-            navigation.navigate('Home');
-          }}>
+          onPress={() => deleteNoteHandler()}>
           Delete Note
         </Button>
       ) : null}
@@ -128,7 +125,7 @@ export const NoteInput: React.FC<Props> = ({noteId}) => {
 
 const styles = StyleSheet.create({
   input: {
-    height: 200,
+    height: 300,
     borderWidth: 1,
     padding: 10,
     borderColor: '#868e96',

@@ -4,7 +4,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeScreen} from './src/screens/HomeScreen';
 import {EditNoteScreen} from './src/screens/EditNoteScreen';
-import {NewNoteScreen} from './src/screens/NewNoteScreen';
 import {NewNoteButton} from './src/components/NewNoteButton';
 
 function App(): JSX.Element {
@@ -27,11 +26,6 @@ function App(): JSX.Element {
             headerTitle: 'All Notes',
             headerRight: () => <NewNoteButton />,
           }}
-        />
-        <Stack.Screen
-          name="NewNote"
-          component={NewNoteScreen}
-          options={{headerTitle: 'New Note'}}
         />
         <Stack.Screen
           name="EditNote"

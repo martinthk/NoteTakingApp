@@ -13,5 +13,6 @@ export const EditNoteScreen: React.FC = () => {
       headerTitle: noteId ? 'Edit Note' : 'New Note',
     });
   }, [navigation, noteId]);
+
   return <NoteInput noteId={noteId} />;
 };

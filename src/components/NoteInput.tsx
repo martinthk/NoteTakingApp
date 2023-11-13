@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
-import {getNote, removeItem, saveNote} from '../services/NoteStorageService';
+import {deleteNote, getNote, saveNote} from '../services/NoteStorageService';
 import {SelectList} from 'react-native-dropdown-select-list';
 import {Button, Text} from 'react-native-paper';
 import data from '../data/data.json';
@@ -15,14 +15,13 @@ const Gap = () => {
   return <View style={{paddingVertical: 8}} />;
 };
 
-export const NoteInput: React.FC<Props> = ({
-  // saveNote,
-  noteId,
-}) => {
+export const NoteInput: React.FC<Props> = ({noteId}) => {
   const [clients, setClients] = useState<string[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [client, setClient] = useState('');
   const [category, setCategory] = useState('');
+  const [orgClient, setOrgClient] = useState('');
+  const [orgCategory, setOrgCategory] = useState('');
   const [noteText, setNoteText] = useState<string>('');
 
   const theme = useTheme();
@@ -43,12 +42,13 @@ export const NoteInput: React.FC<Props> = ({
     if (noteId) {
       getNote(noteId).then(result => {
         setClient(result?.client ?? '');
+        setOrgClient(result?.client ?? '');
         setCategory(result?.category ?? '');
+        setOrgCategory(result?.category ?? '');
         setNoteText(result?.noteText ?? '');
-        console.log(client, category);
       });
     }
-  }, [category, client, noteId]);
+  }, [noteId]);
 
   return (
     <View style={{marginHorizontal: 8, marginTop: 12}}>
@@ -56,15 +56,15 @@ export const NoteInput: React.FC<Props> = ({
 
       {noteId ? (
         <Text variant="labelSmall" style={{paddingBottom: 4}}>
-          Original Client: {client}
+          Original Client: {orgClient}
         </Text>
       ) : null}
 
       <SelectList
-        setSelected={setClient}
+        setSelected={val => setClient(val)}
         data={clients}
         save="value"
-        placeholder="Client"
+        placeholder="Client Options"
         search={false}
         boxStyles={{borderRadius: 10, borderColor: '#868e96'}}
         dropdownStyles={{borderRadius: 10, borderColor: '#adb5bd'}}
@@ -74,15 +74,15 @@ export const NoteInput: React.FC<Props> = ({
       {/* Category drop down menu*/}
       {noteId ? (
         <Text variant="labelSmall" style={{paddingBottom: 4}}>
-          Original Category: {category}
+          Original Category: {orgCategory}
         </Text>
       ) : null}
 
       <SelectList
-        setSelected={setCategory}
+        setSelected={val => setCategory(val)}
         data={categories}
         save="value"
-        placeholder="Category"
+        placeholder="Category Options"
         search={false}
         boxStyles={{borderRadius: 10, borderColor: '#868e96'}}
         dropdownStyles={{borderRadius: 10, borderColor: '#adb5bd'}}
@@ -115,7 +115,10 @@ export const NoteInput: React.FC<Props> = ({
         <Button
           buttonColor={theme.colors.error}
           textColor="white"
-          onPress={() => removeItem()}>
+          onPress={() => {
+            deleteNote(noteId);
+            navigation.navigate('Home');
+          }}>
           Delete Note
         </Button>
       ) : null}

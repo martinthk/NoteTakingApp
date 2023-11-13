@@ -48,6 +48,7 @@ export const saveNote = async (
       category: category,
       noteText: text,
     });
+    console.log(storeItem.notes);
   } else {
     // Add new note to the array
     storeItem.notes.push({
@@ -61,10 +62,9 @@ export const saveNote = async (
   await AsyncStorage.setItem(STORE_KEY, JSON.stringify(storeItem)); // Convert JSON object to string as async storage expects type string
 };
 
-export const deleteNote = async () => {
-
-};
-
-export const removeItem = async () => {
-  await AsyncStorage.removeItem(STORE_KEY);
+export const deleteNote = async (noteId: string) => {
+  const storeItem = await getAllNotes();
+  const noteIndex = storeItem.notes.findIndex(note => note.id === noteId);
+  storeItem.notes.splice(noteIndex, 1); // Remove the note from the list
+  await AsyncStorage.setItem(STORE_KEY, JSON.stringify(storeItem)); // Convert JSON object to string as async storage expects type string
 };
